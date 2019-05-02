@@ -5,6 +5,7 @@ import { URL_SERVICES } from 'src/app/config/config';
 import { map } from 'rxjs/operators';
 import { AlertService } from 'ngx-alerts';
 import { Router } from '@angular/router';
+import { UploadFileService } from '../upload-file/upload-file.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,8 @@ export class UsuarioService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private uploadFileService: UploadFileService
   ) {
     this.tokenInit();
   }
@@ -91,5 +93,29 @@ export class UsuarioService {
           return res.usuario;
         })
       );
+  }
+
+  putUsuario(usuario: Usuario) {
+    const url = `${URL_SERVICES}/usuarios/${usuario._id}/?token=${this.token}`;
+    return this.http.put(url, usuario).pipe(
+      map((res: any) => {
+        this.localStorageInit(res.usuario._id, this.token, res.usuario);
+        this.alertService.success('Los datos se actualizaron correctamente');
+
+        return true;
+      })
+    );
+  }
+
+  changeImage(archivo: File, id: string) {
+    this.uploadFileService.subirArchivo(archivo, 'usuarios', id).then((res: any) => {
+      this.usuario.img = res.usuario.img;
+      this.alertService.success('Se cargo correctamente la imagen');
+      this.localStorageInit(id, this.token, this.usuario);
+      console.log(res);
+    }).catch((err: any) => {
+      this.alertService.danger('Error al intentar cambiar la imagen.');
+      console.log(err);
+    });
   }
 }
