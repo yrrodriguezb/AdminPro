@@ -99,7 +99,10 @@ export class UsuarioService {
     const url = `${URL_SERVICES}/usuarios/${usuario._id}/?token=${this.token}`;
     return this.http.put(url, usuario).pipe(
       map((res: any) => {
-        this.localStorageInit(res.usuario._id, this.token, res.usuario);
+        if(usuario._id === this.usuario._id){
+          this.localStorageInit(res.usuario._id, this.token, res.usuario);
+        }
+
         this.alertService.success('Los datos se actualizaron correctamente');
 
         return true;
@@ -117,5 +120,22 @@ export class UsuarioService {
       this.alertService.danger('Error al intentar cambiar la imagen.');
       console.log(err);
     });
+  }
+
+  getUsuarios(desde: number) {
+    const url = `${URL_SERVICES}/usuarios/?desde=${desde}`;
+    return this.http.get(url);
+  }
+
+  buscarUsuarios(termino: string) {
+    const url = `${URL_SERVICES}/busqueda/coleccion/usuarios/${termino}`;
+    return this.http.get(url).pipe(
+      map((data: any) => data.usuarios)
+    );
+  }
+
+  deleteUsuario(id: string) {
+    const url = `${URL_SERVICES}/usuario/${id}/?token=${this.token}`;
+    return this.http.delete(url);
   }
 }

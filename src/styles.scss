@@ -10,3 +10,29 @@
 .w150 {
   width: 150px;
 }
+
+.w70 {
+  width: 70px;
+}
+
+.img-50 {
+  width: 50px;
+}
+
+.img-40 {
+  width: 40px;
+}
+
+.fondo-negro {
+  background-color: rgba(0,0,0, 0.4);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+}
+
+.oculto {
+  display: none;
+}

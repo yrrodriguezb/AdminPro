@@ -47,7 +47,7 @@
         <h4 class="card-subtitle">Nombre de Usuario</h4>
 
         <img *ngIf="!imagenTemp"  [src]="usuario.img | imagen" alt="" class="w150">
-        <img *ngIf="imagenTemp" [src]="usuario.img | imagen" alt="" class="w150">
+        <img *ngIf="imagenTemp" [src]="imagenTemp" alt="" class="w150">
 
         <input type="file" name="imagen" (change)="seleccionImagen($event.target.files[0])">
 
